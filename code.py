@@ -31,12 +31,11 @@ sleep(5)
 driver.get('https://www.dafabet.com/pt/dfgoal/sports/240-football/22977-brazil')
 sleep(5)
 while True:
-    while True:
-        try:
-            df = obter_dataframe(query="div.event-component")
-            df = df.aa_innerHTML.apply(bs4.BeautifulSoup).apply( lambda soup: [x.text.strip() for x in soup.find_all('a', {'class': 'opponent-name'})] + [x.text.strip() for x in soup.find_all('span', {'class': 'formatted_price'})]).apply( lambda x: x if all([re.match(r'^\d+\.\d+$', y) for y in x[3:]]) else pd.NA ).dropna().apply(pd.Series).rename(columns={0: 'team1_nome', 1: 'team2_nome' , 2: 'team1', 3: 'empate', 4: 'team2'} ).astype( {'team1': 'Float64', 'empate': 'Float64', 'team2': 'Float64'}).reset_index(drop=True)
-            print(df)
-            sleep(5)
-        except Exception as e:
-            print(e)
-            sleep(2)
+    try:
+        df = obter_dataframe(query="div.event-component")
+        df = df.aa_innerHTML.apply(bs4.BeautifulSoup).apply( lambda soup: [x.text.strip() for x in soup.find_all('a', {'class': 'opponent-name'})] + [x.text.strip() for x in soup.find_all('span', {'class': 'formatted_price'})]).apply( lambda x: x if all([re.match(r'^\d+\.\d+$', y) for y in x[3:]]) else pd.NA ).dropna().apply(pd.Series).rename(columns={0: 'team1_nome', 1: 'team2_nome' , 2: 'team1', 3: 'empate', 4: 'team2'} ).astype( {'team1': 'Float64', 'empate': 'Float64', 'team2': 'Float64'}).reset_index(drop=True)
+        print(df)
+        sleep(5)
+    except Exception as e:
+        print(e)
+        sleep(2)
